@@ -74,6 +74,18 @@ public class CarService {
         }
 		
 	}
+
+	public Car changeCarFCM(Car car) {
+		Car editCar = carRepository.findByCarID(car.getcarID());
+		editCar.setCarFcmToken(car.getCarFcmToken());
+		return carRepository.save(editCar);
+	}
+
+	public Car changeTabletFCM(Car car) {
+		Car editCar = carRepository.findByCarID(car.getcarID());
+		editCar.setTabletFcmToken(car.getTabletFcmToken());
+		return carRepository.save(editCar);
+	}
 	
 }
 

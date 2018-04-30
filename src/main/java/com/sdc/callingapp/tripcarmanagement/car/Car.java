@@ -12,6 +12,8 @@ public class Car {
     private String id;
 	
 	private String carID;
+	private String carFcmToken;
+	private String tabletFcmToken;
 	
 	private double longitude;
 	private double latitude;
@@ -73,6 +75,22 @@ public class Car {
 
 	public void setCurrentTrip(Trip currentTrip) {
 		this.currentTrip = currentTrip;
+	}
+
+	public String getCarFcmToken() {
+		return carFcmToken;
+	}
+
+	public void setCarFcmToken(String carFcmToken) {
+		this.carFcmToken = carFcmToken;
+	}
+
+	public String getTabletFcmToken() {
+		return tabletFcmToken;
+	}
+
+	public void setTabletFcmToken(String tabletFcmToken) {
+		this.tabletFcmToken = tabletFcmToken;
 	}
 	
 	

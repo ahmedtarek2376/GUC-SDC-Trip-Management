@@ -29,9 +29,9 @@ public class TripController {
 
 	//use it to create a new trip
 	@RequestMapping(method=RequestMethod.POST, value="/create")
-	public Map<String, String> createTrip(@RequestBody Trip trip) {
+	public Trip createTrip(@RequestBody Trip trip) {
 
-		return Collections.singletonMap("id", tripService.createTrip(trip));
+		return tripService.createTrip(trip);
 
 	}
 	

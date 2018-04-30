@@ -22,9 +22,10 @@ public class Trip {
 	private List<LatLng> destinations;
 	
 	private String carID;
-	private String carFcmToken;
+	private String carFcmToken;	
 	private String userID;
 	private String userFcmToken;
+	private String tabletFcmToken;
 	
 	public Trip() {
 	}
@@ -103,6 +104,30 @@ public class Trip {
 
 	public void setCancelTime(Date cancelTime) {
 		this.cancelTime = cancelTime;
+	}
+
+	public String getCarFcmToken() {
+		return carFcmToken;
+	}
+
+	public void setCarFcmToken(String carFcmToken) {
+		this.carFcmToken = carFcmToken;
+	}
+
+	public String getUserFcmToken() {
+		return userFcmToken;
+	}
+
+	public void setUserFcmToken(String userFcmToken) {
+		this.userFcmToken = userFcmToken;
+	}
+
+	public String getTabletFcmToken() {
+		return tabletFcmToken;
+	}
+
+	public void setTabletFcmToken(String tabletFcmToken) {
+		this.tabletFcmToken = tabletFcmToken;
 	}
 	
 	

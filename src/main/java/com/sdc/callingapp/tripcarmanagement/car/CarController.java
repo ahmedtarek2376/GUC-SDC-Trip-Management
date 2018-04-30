@@ -24,6 +24,24 @@ public class CarController {
 		
 	}
 	
+	//admin use it to change tablet's FCM token
+	@RequestMapping(method=RequestMethod.POST, value="/admin/token/tablet")
+	public Car tabletToken(@RequestBody Car car) {
+		
+		return carService.changeTabletFCM(car);
+		
+	}
+		
+	//admin use it to change car's FCM token
+	@RequestMapping(method=RequestMethod.POST, value="/admin/token/car")
+	public Car carToken(@RequestBody Car car) {
+		
+		return carService.changeCarFCM(car);
+		
+	}
+
+		
+	
 	//admin use it to delete a car by its ID
 	@RequestMapping(method=RequestMethod.POST, value="/admin/delete/{carID}")
 	public void deleteCar(@PathVariable String carID) {

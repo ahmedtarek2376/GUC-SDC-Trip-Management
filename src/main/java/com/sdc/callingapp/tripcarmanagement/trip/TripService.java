@@ -7,20 +7,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sdc.callingapp.tripcarmanagement.NotFoundException;
+import com.sdc.callingapp.tripcarmanagement.car.Car;
+import com.sdc.callingapp.tripcarmanagement.car.CarRepository;
 
 @Service
 public class TripService {
 
 	@Autowired
 	private TripRepository tripRepository;
+	@Autowired
+	private CarRepository carRepository;
 
-	public String createTrip(Trip trip) {
+	public Trip createTrip(Trip trip) {
 		trip.setRequestTime(new Date());
-		String tripID="";
-		tripRepository.insert(trip);
-		tripID= trip.getId();
+		return assingToAvailableCar(trip);
+	}
 
-		return tripID;
+	private Trip assingToAvailableCar(Trip trip) {
+		List<Car> availableCars = carRepository.findByAvailableIsTrue();
+		if(availableCars.size()>0){
+			Car car = availableCars.get(0);
+			trip.setCarID(car.getcarID());
+			trip.setCarFcmToken(car.getCarFcmToken());
+			trip.setTabletFcmToken(car.getTabletFcmToken());
+			car.setAvailable(false);
+			tripRepository.insert(trip);
+			car.setCurrentTrip(trip);
+			carRepository.save(car); 
+		}
+		return trip;
 	}
 
 	public Trip findTrip(String tripID) {
@@ -54,6 +69,7 @@ public class TripService {
 			if(trip.getStartTime() != null && trip.getCancelTime() == null) {
 				trip.setEndTime(new Date());
 				tripRepository.save(trip);	
+				freeTheCar(trip);
 			}
 		}
 		return trip;
@@ -69,9 +85,19 @@ public class TripService {
 			if(trip.getEndTime() == null) {
 				trip.setCancelTime(new Date());
 				tripRepository.save(trip);	
+				freeTheCar(trip);
 			}
 		}
 		return trip;
+	}
+	
+	public void freeTheCar(Trip trip) {
+		String carID = trip.getCarID();
+		Car car = carRepository.findByCarID(carID);
+		car.setAvailable(true);
+		car.setCurrentTrip(null);
+		
+		carRepository.save(car);
 	}
 
 	public List<Trip> findAllTrips() {
