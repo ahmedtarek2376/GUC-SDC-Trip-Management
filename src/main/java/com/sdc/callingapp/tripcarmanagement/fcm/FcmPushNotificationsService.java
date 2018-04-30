@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.scheduling.annotation.Async;
@@ -13,13 +14,14 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class FcmPushNotificationsService {
 	
-	private static final String FIREBASE_SERVER_KEY = "AAAA61cUdk8:APA91bHrrFU6ZaeJfQPW4RNIpqESR4p8nyFAn4nXNyDB9KqVUMNboZhyrV6m0lpnPb_cNF1qEKG6gRUqXHeKrgxvH6PR0ojlLZvVBjgq4sD7n8WLocUeD__Pi_JxsVUxhadib6PXiz2y";
+	@Value("${my.fcm.key}")
+	private String FIREBASE_SERVER_KEY;
 	private static final String FIREBASE_API_URL = "https://fcm.googleapis.com/fcm/send";
 	
 	
-	public FirebaseResponse sendNotification(Push push) {
+	public FirebaseResponse sendNotification(Message message) {
 
-		HttpEntity<Push> request = new HttpEntity<>(push);
+		HttpEntity<Message> request = new HttpEntity<>(message);
 
 		CompletableFuture<FirebaseResponse> pushNotification = this.send(request);
 		CompletableFuture.allOf(pushNotification).join();
@@ -35,7 +37,7 @@ public class FcmPushNotificationsService {
 	}
 	
 	@Async
-	public CompletableFuture<FirebaseResponse> send(HttpEntity<Push> request) {
+	public CompletableFuture<FirebaseResponse> send(HttpEntity<Message> request) {
 
 		RestTemplate restTemplate = new RestTemplate();
 
@@ -46,7 +48,6 @@ public class FcmPushNotificationsService {
 
 		ArrayList<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
 		
-		System.out.println(FIREBASE_SERVER_KEY);
 		interceptors.add(new HeaderRequestInterceptor("Authorization", "key=" + FIREBASE_SERVER_KEY));
 		interceptors.add(new HeaderRequestInterceptor("Content-Type", "application/json"));
 		restTemplate.setInterceptors(interceptors);

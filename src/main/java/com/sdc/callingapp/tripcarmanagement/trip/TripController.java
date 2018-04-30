@@ -1,9 +1,7 @@
 package com.sdc.callingapp.tripcarmanagement.trip;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sdc.callingapp.tripcarmanagement.fcm.FcmPushNotificationsService;
 import com.sdc.callingapp.tripcarmanagement.fcm.Notification;
-import com.sdc.callingapp.tripcarmanagement.fcm.Push;
+import com.sdc.callingapp.tripcarmanagement.fcm.Message;
 
 @RestController
 @RequestMapping("/trip")
@@ -76,10 +74,17 @@ public class TripController {
 	//use it to test fcm
 	@RequestMapping(value = "/push", method = RequestMethod.GET)
 	public ResponseEntity<?> push() {
-
+		HashMap<String,String> data = new HashMap<>();
+		data.put("Key-1", "JSA Data 1");
+		data.put("Key-2", "JSA Data 2");
 		Notification notification = new Notification("My App", "Test");
-		Push push = new Push("eKYzG_k0UFA:APA91bFgr6A87evf8jMQRXEgb6Xhjg6CmnB93Rb1or061bOwH2_Z6rhIWlfazA3yYXaqK0i18RROXTJdOWkxVnzM7N1okqxDYXhlQMNJ7-y1Aym6qY_2reX3nATmoBTgs2t2MRUP5ZRa","high", notification);
-		pushNotification.sendNotification(push);
+		Message message = new Message();
+		//message.setNotification(notification);
+		message.setData(data);
+		message.setTo("enPP-ZIzEiw:APA91bGGYoYhYQaFft7IFHx2cfI-wm21BSQucIr-q9iqdOy_ssUAK-oJk63hOXm3dXM5TGZ9x0jsAhxnakzX-2Vmm-mPhc4-xSZYEFYyYwzXyPJJ1GGX3vY8aXt_rIJYxYZH6re4KyHC");
+		message.setPriority("high");
+		//Message message = new Message("enPP-ZIzEiw:APA91bGGYoYhYQaFft7IFHx2cfI-wm21BSQucIr-q9iqdOy_ssUAK-oJk63hOXm3dXM5TGZ9x0jsAhxnakzX-2Vmm-mPhc4-xSZYEFYyYwzXyPJJ1GGX3vY8aXt_rIJYxYZH6re4KyHC","high", notification);
+		pushNotification.sendNotification(message);
 		
 		return new ResponseEntity<Trip>(HttpStatus.OK);
 	}

@@ -1,19 +1,16 @@
 package com.sdc.callingapp.tripcarmanagement.fcm;
+import java.util.HashMap;
 import java.util.List;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Push {
-	
-	private JSONObject data;
-	
+public class Message {
 
 	private String to;
 
 	private String priority;
+	
+	private HashMap<String,String> data;
 
 	private Notification notification;
 
@@ -21,28 +18,41 @@ public class Push {
 	private List<String> registrationIds;
 
 	
-	public Push(String priority, Notification notification, List<String> registrationds) {
+	public Message(List<String> registrationds, String priority, Notification notification, HashMap<String,String> data) {
 		this.priority = priority;
 		this.notification = notification;
 		this.registrationIds = registrationds;
+		this.data = data;
 	}
-
 	
-	public Push(String to, String priority, Notification notification) {
-		data = new JSONObject();
-		try {
-			data.put("Key-1", "JSA Data 1");
-			data.put("Key-2", "JSA Data 2");
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+	public Message(List<String> registrationds, String priority, HashMap<String,String> data) {
+		this.priority = priority;
+		this.data = data; 
+		this.registrationIds = registrationds;
+	}
+	
+	public Message(String to, String priority, Notification notification, HashMap<String,String> data) {
+//		data = new JSONObject();
+//		try {
+//			data.put("Key-1", "JSA Data 1");
+//			data.put("Key-2", "JSA Data 2");
+//		} catch (JSONException e) {
+//			e.printStackTrace();
+//		}
 		this.to = to;
 		this.priority = priority;
 		this.notification = notification;
+		this.data = data; 
+	}
+	
+	public Message(String to, String priority, HashMap<String,String> data) {
+		this.to = to;
+		this.priority = priority;
+		this.data = data; 
 	}
 
 	
-	public Push() {
+	public Message() {
 
 	}
 
@@ -76,6 +86,14 @@ public class Push {
 
 	public void setTo(String to) {
 		this.to = to;
+	}
+
+	public HashMap<String,String> getData() {
+		return data;
+	}
+
+	public void setData(HashMap<String,String> data) {
+		this.data = data;
 	}
 
 }
