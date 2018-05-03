@@ -1,8 +1,13 @@
 package com.sdc.callingapp.tripcarmanagement.car;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import com.sdc.callingapp.tripcarmanagement.LatLng;
 
 @Component
 public class CarSeeder implements CommandLineRunner{
@@ -12,17 +17,17 @@ public class CarSeeder implements CommandLineRunner{
 	
 	@Override
 	public void run(String... args) throws Exception {
-//		Car car1 = new Car("car1", 11.2, 11.9, false);
-//		Car car2 = new Car("car2", 12.2, 12.9, true);
-//		Car car3 = new Car("car3", 13.2, 13.9, false);
-//		Car car4 = new Car("car4", 14.2, 14.9, true);
-//		Car car5 = new Car("car5", 15.2, 15.9, false);
-//		Car car6 = new Car("car6", 16.2, 16.9, true);
-//		Car car7 = new Car("car7", 17.2, 17.9, false);
-//		Car car8 = new Car("car8", 18.2, 18.9, true);
-//		
-//		this.carRepository.deleteAll();
-//		List<Car> cars = Arrays.asList(car1,car2,car3,car4,car5,car6,car7,car8);
-//		this.carRepository.saveAll(cars);
+		Car car1 = new Car("car1", "", new LatLng(), false);
+		Car car2 = new Car("car2", "", new LatLng(29.986225, 31.440492), true);
+		Car car3 = new Car("car3", "", new LatLng(), false);
+		Car car4 = new Car("car4", "", new LatLng(29.984971, 31.440341), true);
+		Car car5 = new Car("car5", "", new LatLng(), false);
+		Car car6 = new Car("car6", "", new LatLng(29.987298, 31.438829), true);
+		Car car7 = new Car("car7", "", new LatLng(), false);
+		Car car8 = new Car("car8", "", new LatLng(29.987270, 31.441484), true);
+		
+		this.carRepository.deleteAll();
+		List<Car> cars = Arrays.asList(car1,car2,car3,car4,car5,car6,car7,car8);
+		this.carRepository.saveAll(cars);
 	}
 }

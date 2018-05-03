@@ -3,6 +3,7 @@ package com.sdc.callingapp.tripcarmanagement.car;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.sdc.callingapp.tripcarmanagement.LatLng;
 import com.sdc.callingapp.tripcarmanagement.trip.Trip;
 
 @Document(collection = "cars")
@@ -12,25 +13,30 @@ public class Car {
     private String id;
 	
 	private String carID;
-	private String carFcmToken;
 	private String tabletFcmToken;
 	
-	private double longitude;
-	private double latitude;
+	private LatLng latLng;
     
 	private boolean available;
 	
 	private Trip currentTrip;
 	
-    public Car() {
+	public Car() {
+		
+	}
+	
+    public Car(String carID, String tabletFcmToken, LatLng latlng) {
+    	this.carID = carID;
+    	this.latLng = latlng;
+    	this.available = true;
 	}
     
-    public Car(String carID, double longitude, double latitude, boolean available) {
+    public Car(String carID, String tabletFcmToken, LatLng latlng, boolean available) {
     	this.carID = carID;
-    	this.latitude = latitude;
-    	this.longitude = longitude;
+    	this.latLng = latlng;
     	this.available = available;
-    }
+    	this.tabletFcmToken = tabletFcmToken;
+	}
     
 	public String getId() {
 		return id;
@@ -43,22 +49,6 @@ public class Car {
 	}
 	public void setcarID(String carID) {
 		this.carID = carID;
-	}
-
-	public double getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(double longitude) {
-		this.longitude = longitude;
-	}
-
-	public double getLatitude() {
-		return latitude;
-	}
-
-	public void setLatitude(double latitude) {
-		this.latitude = latitude;
 	}
 
 	public boolean isAvailable() {
@@ -77,20 +67,20 @@ public class Car {
 		this.currentTrip = currentTrip;
 	}
 
-	public String getCarFcmToken() {
-		return carFcmToken;
-	}
-
-	public void setCarFcmToken(String carFcmToken) {
-		this.carFcmToken = carFcmToken;
-	}
-
 	public String getTabletFcmToken() {
 		return tabletFcmToken;
 	}
 
 	public void setTabletFcmToken(String tabletFcmToken) {
 		this.tabletFcmToken = tabletFcmToken;
+	}
+
+	public LatLng getLatLng() {
+		return latLng;
+	}
+
+	public void setLatLng(LatLng latLng) {
+		this.latLng = latLng;
 	}
 	
 	

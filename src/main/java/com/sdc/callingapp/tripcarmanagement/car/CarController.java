@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sdc.callingapp.tripcarmanagement.LatLng;
+
 @RestController
 @RequestMapping("/car")
 public class CarController {
@@ -31,15 +33,6 @@ public class CarController {
 		return carService.changeTabletFCM(car);
 		
 	}
-		
-	//admin use it to change car's FCM token
-	@RequestMapping(method=RequestMethod.POST, value="/admin/token/car")
-	public Car carToken(@RequestBody Car car) {
-		
-		return carService.changeCarFCM(car);
-		
-	}
-
 		
 	
 	//admin use it to delete a car by its ID
@@ -76,9 +69,9 @@ public class CarController {
 	
 	//use it to update car's current location
 	@RequestMapping(method=RequestMethod.POST, value="/update/location/{carID}")
-	public Car updateLocation(@PathVariable String carID, @RequestBody double longitude, @RequestBody double latitude) {
+	public Car updateLocation(@PathVariable String carID, @RequestBody LatLng latlng) {
 		
-		return carService.updateCarLocation(carID, longitude, latitude);
+		return carService.updateCarLocation(carID, latlng);
 		
 	}
 	
@@ -89,5 +82,51 @@ public class CarController {
 		return carService.updateCarAvailability(carID, available);
 		
 	}
+	//use it to start car's current trip from mobile
+	@RequestMapping(method=RequestMethod.GET, value="/trip/start/mobile/{carID}")
+	public Car mobileStartCurrentTrip(@PathVariable String carID) {
+		
+		return carService.startCurrentTrip(carID,1);
+		
+	}
 	
+	//use it to end car's current trip from mobile
+	@RequestMapping(method=RequestMethod.GET, value="/trip/end/mobile/{carID}")
+	public Car mobileEndCurrentTrip(@PathVariable String carID) {
+	
+		return carService.endCurrentTrip(carID,1);
+		
+	}
+	
+	//use it to cancel car's current trip from mobile
+	@RequestMapping(method=RequestMethod.GET, value="/trip/cancel/mobile/{carID}")
+	public Car mobileCancelCurrentTrip(@PathVariable String carID) {
+		
+		return carService.cancelCurrentTrip(carID,1);
+		
+	}
+	
+	//use it to start car's current trip from tablet
+	@RequestMapping(method=RequestMethod.GET, value="/trip/start/tablet/{carID}")
+	public Car tabletStartCurrentTrip(@PathVariable String carID) {
+		
+		return carService.startCurrentTrip(carID,2);
+		
+	}
+	
+	//use it to end car's current trip from tablet
+	@RequestMapping(method=RequestMethod.GET, value="/trip/end/tablet/{carID}")
+	public Car tabletEndCurrentTrip(@PathVariable String carID) {
+	
+		return carService.endCurrentTrip(carID,2);
+		
+	}
+	
+	//use it to cancel car's current trip from tablet
+	@RequestMapping(method=RequestMethod.GET, value="/trip/cancel/tablet/{carID}")
+	public Car tabletCancelCurrentTrip(@PathVariable String carID) {
+		
+		return carService.cancelCurrentTrip(carID,2);
+		
+	}
 }

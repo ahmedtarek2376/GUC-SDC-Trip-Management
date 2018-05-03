@@ -28,7 +28,6 @@ public class TripService {
 		if(availableCars.size()>0){
 			Car car = availableCars.get(0);
 			trip.setCarID(car.getcarID());
-			trip.setCarFcmToken(car.getCarFcmToken());
 			trip.setTabletFcmToken(car.getTabletFcmToken());
 			car.setAvailable(false);
 			tripRepository.insert(trip);
