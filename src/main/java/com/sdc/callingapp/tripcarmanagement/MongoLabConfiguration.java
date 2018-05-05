@@ -1,5 +1,4 @@
 package com.sdc.callingapp.tripcarmanagement;
-
 import java.net.UnknownHostException;
 
 import org.springframework.context.annotation.Bean;
