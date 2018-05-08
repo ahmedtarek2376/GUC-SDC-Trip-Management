@@ -1,6 +1,7 @@
 package com.sdc.callingapp.tripcarmanagement.car;
 
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -176,7 +177,7 @@ public class CarController {
 	
 	//use it to check if user has an ongoing trip
 	@RequestMapping(method=RequestMethod.GET, value="/ontrip/{gmail}")
-	public JSONObject checkUserOnTrip(@PathVariable String gmail) {
+	public Map<String, Boolean> checkUserOnTrip(@PathVariable String gmail) {
 		
 		return carService.checkUserOnTrip(gmail);
 		

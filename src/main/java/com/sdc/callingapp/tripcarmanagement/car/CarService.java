@@ -1,8 +1,10 @@
 package com.sdc.callingapp.tripcarmanagement.car;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.json.JSONException;
@@ -354,25 +356,12 @@ public class CarService {
 		}
 	}
 
-	public JSONObject checkUserOnTrip(String gmail) {
+	public Map<String, Boolean> checkUserOnTrip(String gmail) {
 		Car car = carRepository.findByCurrentTripUserID(gmail);
-		JSONObject object = new JSONObject();
-		if(car!=null) {
-			try {
-				object.put("free", false);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return object;
+		if(car == null) {
+			return Collections.singletonMap("free", true);
 		}else {
-			try {
-				object.put("free", true);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return object;	
+			return Collections.singletonMap("free", false);
 		}
 	}
 	
