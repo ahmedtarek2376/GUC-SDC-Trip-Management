@@ -29,6 +29,7 @@ public class TripService {
 			Car car = availableCars.get(0);
 			trip.setCarID(car.getcarID());
 			trip.setTabletFcmToken(car.getTabletFcmToken());
+			trip.setEvent(TripEvent.CAR_ON_WAY.name());
 			car.setAvailable(false);
 			tripRepository.insert(trip);
 			car.setCurrentTrip(trip);
