@@ -352,12 +352,12 @@ public class CarService {
 		}
 	}
 
-	public Trip checkUserOnTrip(String gmail) {
+	public boolean checkUserOnTrip(String gmail) {
 		Car car = carRepository.findByCurrentTripUserID(gmail);
 		if(car!=null) {
-			return car.getCurrentTrip();
+			return true;
 		}else {
-			return null;
+			return false;
 		}
 	}
 	
