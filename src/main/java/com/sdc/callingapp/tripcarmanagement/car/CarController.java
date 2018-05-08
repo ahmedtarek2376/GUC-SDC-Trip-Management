@@ -99,10 +99,10 @@ public class CarController {
 	}
 	
 	//use it to cancel car's current trip from mobile
-	@RequestMapping(method=RequestMethod.GET, value="/trip/cancel/mobile/{carID}")
-	public Car mobileCancelCurrentTrip(@PathVariable String carID) {
+	@RequestMapping(method=RequestMethod.GET, value="/trip/cancel/mobile/{gmail}")
+	public Car mobileCancelCurrentTrip(@PathVariable String gmail) {
 		
-		return carService.cancelCurrentTrip(carID,1);
+		return carService.carCancel(gmail,1);
 		
 	}
 	
