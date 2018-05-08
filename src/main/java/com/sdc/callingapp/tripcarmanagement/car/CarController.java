@@ -177,7 +177,7 @@ public class CarController {
 	
 	//use it to check if user has an ongoing trip
 	@RequestMapping(method=RequestMethod.GET, value="/ontrip/{gmail}")
-	public Map<String, Boolean> checkUserOnTrip(@PathVariable String gmail) {
+	public Map<String, Object> checkUserOnTrip(@PathVariable String gmail) {
 		
 		return carService.checkUserOnTrip(gmail);
 		
