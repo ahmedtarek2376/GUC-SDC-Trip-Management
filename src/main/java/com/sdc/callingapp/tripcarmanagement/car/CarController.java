@@ -82,6 +82,32 @@ public class CarController {
 		return carService.updateCarAvailability(carID, available);
 		
 	}
+	
+	//use it to notify that car arrived pickup location
+	@RequestMapping(method=RequestMethod.GET, value="/trip/arrive/pickup/{carID}")
+	public Car carArrivePickup(@PathVariable String carID) {
+		
+		return carService.carArrivePickup(carID);
+		
+	}
+	
+	//use it to notify that car arrived final destination
+	@RequestMapping(method=RequestMethod.GET, value="/trip/arrive/final/{carID}")
+	public Car carArriveFinal(@PathVariable String carID) {
+		
+		return carService.carArriveFinal(carID);
+		
+	}
+	
+	//use it to notify that car arrived a destination
+	@RequestMapping(method=RequestMethod.GET, value="/trip/arrive/destination/{carID}")
+	public Car carArriveDestination(@PathVariable String carID) {
+		
+		return carService.carArriveDestination(carID);
+		
+	}
+	
+	
 	//use it to start car's current trip from mobile
 	@RequestMapping(method=RequestMethod.GET, value="/trip/start/mobile/{gmail}")
 	public Car mobileStartCurrentTrip(@PathVariable String gmail) {
@@ -91,10 +117,10 @@ public class CarController {
 	}
 	
 	//use it to end car's current trip from mobile
-	@RequestMapping(method=RequestMethod.GET, value="/trip/end/mobile/{carID}")
-	public Car mobileEndCurrentTrip(@PathVariable String carID) {
+	@RequestMapping(method=RequestMethod.GET, value="/trip/end/mobile/{gmail}")
+	public Car mobileEndCurrentTrip(@PathVariable String gmail) {
 	
-		return carService.endCurrentTrip(carID,1);
+		return carService.mobileEnd(gmail,1);
 		
 	}
 	
@@ -102,7 +128,7 @@ public class CarController {
 	@RequestMapping(method=RequestMethod.GET, value="/trip/cancel/mobile/{gmail}")
 	public Car mobileCancelCurrentTrip(@PathVariable String gmail) {
 		
-		return carService.carCancel(gmail,1);
+		return carService.mobileCancel(gmail,1);
 		
 	}
 	

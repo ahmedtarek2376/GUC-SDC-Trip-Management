@@ -18,9 +18,10 @@ public class Trip {
 	private Date startTime;
 	private Date endTime;
 	private Date cancelTime;
+	private Date carArriveFinal;
 	
 	private LatLng pickupLocation;
-	private List<LatLng> destinations;
+	private List<TripDestination> destinations;
 	
 	private String carID;
 	private String carFcmToken;	
@@ -31,7 +32,7 @@ public class Trip {
 	public Trip() {
 	}
 	
-	public Trip(String carID, String userID, LatLng pickupLocation, List<LatLng> destinations) {
+	public Trip(String carID, String userID, LatLng pickupLocation, List<TripDestination> destinations) {
 		this.requestTime = new Date();
 		this.carID = carID;
 		this.userID = userID;
@@ -75,11 +76,11 @@ public class Trip {
 		this.pickupLocation = pickupLocation;
 	}
 
-	public List<LatLng> getDestinations() {
+	public List<TripDestination> getDestinations() {
 		return destinations;
 	}
 
-	public void setDestinations(List<LatLng> destinations) {
+	public void setDestinations(List<TripDestination> destinations) {
 		this.destinations = destinations;
 	}
 
@@ -137,6 +138,14 @@ public class Trip {
 
 	public void setCarArriveTime(Date carArriveTime) {
 		this.carArriveTime = carArriveTime;
+	}
+
+	public Date getCarArriveFinal() {
+		return carArriveFinal;
+	}
+
+	public void setCarArriveFinal(Date carArriveFinal) {
+		this.carArriveFinal = carArriveFinal;
 	}
 	
 	
