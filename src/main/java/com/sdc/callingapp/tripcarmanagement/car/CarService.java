@@ -351,6 +351,15 @@ public class CarService {
 			throw new NotFoundException("This car has no current trip");
 		}
 	}
+
+	public Trip checkUserOnTrip(String gmail) {
+		Car car = carRepository.findByCurrentTripUserID(gmail);
+		if(car!=null) {
+			return car.getCurrentTrip();
+		}else {
+			return null;
+		}
+	}
 	
 	
 	

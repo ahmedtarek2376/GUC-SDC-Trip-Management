@@ -172,4 +172,12 @@ public class CarController {
 		return carService.tabletContinue(carID,2);
 		
 	}
+	
+	//use it to check if user has an ongoing trip
+	@RequestMapping(method=RequestMethod.GET, value="/ontrip/{gmail}")
+	public Trip checkUserOnTrip(@PathVariable String gmail) {
+		
+		return carService.checkUserOnTrip(gmail);
+		
+	}
 }
