@@ -356,13 +356,23 @@ public class CarService {
 		}
 	}
 
-	public Map<String, Boolean> checkUserOnTrip(String gmail) {
+	public Map<String, Object> checkUserOnTrip(String gmail) {
 		Car car = carRepository.findByCurrentTripUserID(gmail);
-		if(car == null) {
-			return Collections.singletonMap("free", true);
+//		if(car == null) {
+//			return Collections.singletonMap("free", true);
+//		}else {
+//			return Collections.singletonMap("free", false);
+//		}
+		Map<String,Object> map = new HashMap<String, Object>();
+		if(car==null) {
+			 map.put("FREE", true);
+			 map.put("TRIP_ID", null);
 		}else {
-			return Collections.singletonMap("free", false);
+			 map.put("FREE", false);
+			 map.put("TRIP_ID", car.getCurrentTrip().getId());
 		}
+		
+		return map;
 	}
 	
 	
