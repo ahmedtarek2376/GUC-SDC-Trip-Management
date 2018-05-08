@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -352,12 +354,25 @@ public class CarService {
 		}
 	}
 
-	public boolean checkUserOnTrip(String gmail) {
+	public JSONObject checkUserOnTrip(String gmail) {
 		Car car = carRepository.findByCurrentTripUserID(gmail);
+		JSONObject object = new JSONObject();
 		if(car!=null) {
-			return true;
+			try {
+				object.put("free", false);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return object;
 		}else {
-			return false;
+			try {
+				object.put("free", true);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return object;	
 		}
 	}
 	
