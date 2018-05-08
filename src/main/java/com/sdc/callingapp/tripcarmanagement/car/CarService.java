@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -158,6 +160,8 @@ public class CarService {
 			//set the car to available
 			car.setAvailable(true);
 			carRepository.save(car);
+		} else {
+			throw new NotFoundException("Can not find a car on trip with this userID");
 		}
 		
 		return carRepository.save(car);
