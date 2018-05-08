@@ -159,12 +159,10 @@ public class CarService {
 			car.setCurrentTrip(null);
 			//set the car to available
 			car.setAvailable(true);
-			carRepository.save(car);
+			return carRepository.save(car);
 		} else {
 			throw new NotFoundException("Can not find a car on trip with this userID");
 		}
-		
-		return carRepository.save(car);
 	}
 	
 	public Car endCurrentTrip(String carID, int mode) {
