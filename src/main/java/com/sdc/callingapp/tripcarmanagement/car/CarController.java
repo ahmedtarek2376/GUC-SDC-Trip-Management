@@ -83,10 +83,10 @@ public class CarController {
 		
 	}
 	//use it to start car's current trip from mobile
-	@RequestMapping(method=RequestMethod.GET, value="/trip/start/mobile/{carID}")
-	public Car mobileStartCurrentTrip(@PathVariable String carID) {
+	@RequestMapping(method=RequestMethod.GET, value="/trip/start/mobile/{gmail}")
+	public Car mobileStartCurrentTrip(@PathVariable String gmail) {
 		
-		return carService.startCurrentTrip(carID,1);
+		return carService.mobileStart(gmail, 1);
 		
 	}
 	

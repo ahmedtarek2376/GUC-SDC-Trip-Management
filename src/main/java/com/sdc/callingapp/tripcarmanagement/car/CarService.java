@@ -111,6 +111,19 @@ public class CarService {
 		return carRepository.save(car);
 	}
 	
+	public Car mobileStart(String gmail, int mode) {
+		Car car = carRepository.findByCurrentTripUserID(gmail);
+		if(car!=null) {
+			Trip currentTrip = car.getCurrentTrip();
+			currentTrip.setStartTime(new Date());
+			car.setCurrentTrip(currentTrip);
+			carRepository.save(car);
+			tripRepository.save(currentTrip);
+			updateProfileDb(currentTrip, mode, "STARTED");
+		}
+		return carRepository.save(car);
+	}
+	
 	public Car cancelCurrentTrip(String carID, int mode) {
 		Car car = carRepository.findByCarID(carID);
 		
@@ -127,6 +140,26 @@ public class CarService {
 		//set the car to available
 		car.setAvailable(true);
 		carRepository.save(car);
+		return carRepository.save(car);
+	}
+	
+	public Car carCancel(String gmail, int mode) {
+		Car car = carRepository.findByCurrentTripUserID(gmail);
+		
+		if(car!=null) {
+			//set End time in current trip
+			Trip currentTrip = car.getCurrentTrip();
+			currentTrip.setCancelTime(new Date());
+			//update Trip in Trip DB
+			tripRepository.save(currentTrip);
+			updateProfileDb(currentTrip, mode, "CANCELED");
+			//remove current trip from car
+			car.setCurrentTrip(null);
+			//set the car to available
+			car.setAvailable(true);
+			carRepository.save(car);
+		}
+		
 		return carRepository.save(car);
 	}
 	

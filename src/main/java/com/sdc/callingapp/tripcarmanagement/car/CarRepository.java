@@ -10,5 +10,6 @@ public interface CarRepository extends MongoRepository<Car, String> {
 	
     public Car findByCarID(String carID);
     public List<Car> findByAvailableIsTrue();
+    public Car findByCurrentTripUserID(String gmail);
     
 }
