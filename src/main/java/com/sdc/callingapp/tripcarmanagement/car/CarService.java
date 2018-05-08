@@ -101,103 +101,105 @@ public class CarService {
 		return carRepository.save(editCar);
 	}
 
-	public Car startCurrentTrip(String carID, int mode) {
+	public Trip startCurrentTrip(String carID, int mode) {
 		Car car = carRepository.findByCarID(carID);
-		if(car.getCurrentTrip()!=null) {
-			Trip currentTrip = car.getCurrentTrip();
+		Trip currentTrip = car.getCurrentTrip();
+		if(currentTrip!=null) {
 			currentTrip.setStartTime(new Date());
 			car.setCurrentTrip(currentTrip);
 			carRepository.save(car);
-			tripRepository.save(currentTrip);
 			updateProfileDb(currentTrip, mode, "START");
+			return tripRepository.save(currentTrip);
+		}else {
+			throw new NotFoundException("This car has no current trip");
 		}
-		return carRepository.save(car);
+
 	}
 	
-	public Car mobileStart(String gmail, int mode) {
+	public Trip mobileStart(String gmail, int mode) {
 		Car car = carRepository.findByCurrentTripUserID(gmail);
 		if(car!=null) {
 			Trip currentTrip = car.getCurrentTrip();
 			currentTrip.setStartTime(new Date());
 			car.setCurrentTrip(currentTrip);
-			tripRepository.save(currentTrip);
+			carRepository.save(car);
 			updateProfileDb(currentTrip, mode, "START");
-			return carRepository.save(car);
+			return tripRepository.save(currentTrip);
+
 		}else {
 			throw new NotFoundException("Can not find a car on trip with this userID");
 		}
 		
 	}
 	
-	public Car cancelCurrentTrip(String carID, int mode) {
+	public Trip cancelCurrentTrip(String carID, int mode) {
 		Car car = carRepository.findByCarID(carID);
-		
-		if(car.getCurrentTrip()!=null) {
+		Trip currentTrip = car.getCurrentTrip();
+		if(currentTrip!=null) {
 			//set End time in current trip
-			Trip currentTrip = car.getCurrentTrip();
 			currentTrip.setCancelTime(new Date());
-			//update Trip in Trip DB
-			tripRepository.save(currentTrip);
 			updateProfileDb(currentTrip, mode, "CANCEL");
+			//remove current trip from car
+			car.setCurrentTrip(null);
+			//set the car to available
+			car.setAvailable(true);
+			carRepository.save(car);
+			return tripRepository.save(currentTrip);
+		}else {
+			throw new NotFoundException("This car has no current trip");
 		}
-		//remove current trip from car
-		car.setCurrentTrip(null);
-		//set the car to available
-		car.setAvailable(true);
-		return carRepository.save(car);
 	}
 	
-	public Car mobileCancel(String gmail, int mode) {
+	public Trip mobileCancel(String gmail, int mode) {
 		Car car = carRepository.findByCurrentTripUserID(gmail);
 		if(car!=null) {
 			//set Cancel time in current trip
 			Trip currentTrip = car.getCurrentTrip();
 			currentTrip.setCancelTime(new Date());
 			//update Trip in Trip DB
-			tripRepository.save(currentTrip);
 			updateProfileDb(currentTrip, mode, "CANCEL");
 			//remove current trip from car
 			car.setCurrentTrip(null);
 			//set the car to available
 			car.setAvailable(true);
-			return carRepository.save(car);
+			carRepository.save(car);
+			return tripRepository.save(currentTrip);
 		} else {
 			throw new NotFoundException("Can not find a car on trip with this userID");
 		}
 	}
 	
-	public Car endCurrentTrip(String carID, int mode) {
+	public Trip endCurrentTrip(String carID, int mode) {
 		Car car = carRepository.findByCarID(carID);
-		//set End time in current trip
-		if(car.getCurrentTrip()!=null) {
+		Trip currentTrip = car.getCurrentTrip();
+		if(currentTrip!=null) {
 			//set End time in current trip
-			Trip currentTrip = car.getCurrentTrip();
 			currentTrip.setEndTime(new Date());
-			//update Trip in Trip DB
-			tripRepository.save(currentTrip);
-			updateProfileDb(currentTrip, mode, "END");
-		}
-		//remove current trip from car
-		car.setCurrentTrip(null);
-		//set the car to available
-		car.setAvailable(true);
-		return carRepository.save(car);
-	}
-	
-	public Car mobileEnd(String gmail, int mode) {
-		Car car = carRepository.findByCurrentTripUserID(gmail);
-		if(car!=null) {
-			//set Cancel time in current trip
-			Trip currentTrip = car.getCurrentTrip();
-			currentTrip.setEndTime(new Date());
-			//update Trip in Trip DB
-			tripRepository.save(currentTrip);
 			updateProfileDb(currentTrip, mode, "END");
 			//remove current trip from car
 			car.setCurrentTrip(null);
 			//set the car to available
 			car.setAvailable(true);
-			return carRepository.save(car);
+			carRepository.save(car);
+			return tripRepository.save(currentTrip);
+		}else {
+			throw new NotFoundException("This car has no current trip");
+		}
+	}
+	
+	public Trip mobileEnd(String gmail, int mode) {
+		Car car = carRepository.findByCurrentTripUserID(gmail);
+		if(car!=null) {
+			//set Cancel time in current trip
+			Trip currentTrip = car.getCurrentTrip();
+			currentTrip.setEndTime(new Date());
+			updateProfileDb(currentTrip, mode, "END");
+			//remove current trip from car
+			car.setCurrentTrip(null);
+			//set the car to available
+			car.setAvailable(true);
+			carRepository.save(car);
+			return tripRepository.save(currentTrip);
 		} else {
 			throw new NotFoundException("Can not find a car on trip with this userID");
 		}
@@ -310,6 +312,28 @@ public class CarService {
 			return carRepository.save(car);
 		}else {
 			throw new NotFoundException("Car has no current trip");
+		}
+	}
+
+	public Trip tabletContinue(String carID, int mode) {
+		Car car = carRepository.findByCarID(carID);
+		Trip currentTrip = car.getCurrentTrip();
+		if(currentTrip!=null) {
+			updateProfileDb(currentTrip, mode, "CONTINUE");
+			return currentTrip;
+		}else {
+			throw new NotFoundException("This car has no current trip");
+		}
+	}
+
+	public Trip mobileContinue(String gmail, int mode) {
+		Car car = carRepository.findByCurrentTripUserID(gmail);
+		Trip currentTrip = car.getCurrentTrip();
+		if(currentTrip!=null) {
+			updateProfileDb(currentTrip, mode, "CONTINUE");
+			return currentTrip;
+		}else {
+			throw new NotFoundException("This car has no current trip");
 		}
 	}
 	
