@@ -1,0 +1,17 @@
+package com.sdc.callingapp.tripcarmanagement.trip;
+public enum TripEvent {
+    START("START"),
+    END("END"),
+    CANCEL("CANCEL"),
+    CONTINUE("CONTINUE"),
+    ARRIVE_PICKUP("ARRIVE_PICKUP"),
+    ARRIVE_DESTINATION("ARRIVE_DESTINATION"),
+    ARRIVE_FINAL("ARRIVE_FINAL"),
+    CAR_ON_WAY("CAR_ON_WAY");
+	
+	private String name;
+	
+	TripEvent(String event) {
+		this.name = event;
+	}
+}

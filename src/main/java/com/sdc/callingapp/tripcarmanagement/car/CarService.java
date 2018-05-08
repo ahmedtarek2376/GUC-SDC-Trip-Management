@@ -19,6 +19,7 @@ import com.sdc.callingapp.tripcarmanagement.fcm.Message;
 import com.sdc.callingapp.tripcarmanagement.fcm.Notification;
 import com.sdc.callingapp.tripcarmanagement.trip.Trip;
 import com.sdc.callingapp.tripcarmanagement.trip.TripDestination;
+import com.sdc.callingapp.tripcarmanagement.trip.TripEvent;
 import com.sdc.callingapp.tripcarmanagement.trip.TripRepository;
 
 @Service
@@ -106,9 +107,10 @@ public class CarService {
 		Trip currentTrip = car.getCurrentTrip();
 		if(currentTrip!=null) {
 			currentTrip.setStartTime(new Date());
+			currentTrip.setEvent(TripEvent.START.name());
 			car.setCurrentTrip(currentTrip);
 			carRepository.save(car);
-			updateProfileDb(currentTrip, mode, "START");
+			updateProfileDb(currentTrip, mode, TripEvent.START.name());
 			return tripRepository.save(currentTrip);
 		}else {
 			throw new NotFoundException("This car has no current trip");
@@ -121,9 +123,10 @@ public class CarService {
 		if(car!=null) {
 			Trip currentTrip = car.getCurrentTrip();
 			currentTrip.setStartTime(new Date());
+			currentTrip.setEvent(TripEvent.START.name());
 			car.setCurrentTrip(currentTrip);
 			carRepository.save(car);
-			updateProfileDb(currentTrip, mode, "START");
+			updateProfileDb(currentTrip, mode, TripEvent.START.name());
 			return tripRepository.save(currentTrip);
 
 		}else {
@@ -138,7 +141,8 @@ public class CarService {
 		if(currentTrip!=null) {
 			//set End time in current trip
 			currentTrip.setCancelTime(new Date());
-			updateProfileDb(currentTrip, mode, "CANCEL");
+			currentTrip.setEvent(TripEvent.CANCEL.name());
+			updateProfileDb(currentTrip, mode, TripEvent.CANCEL.name());
 			//remove current trip from car
 			car.setCurrentTrip(null);
 			//set the car to available
@@ -156,8 +160,8 @@ public class CarService {
 			//set Cancel time in current trip
 			Trip currentTrip = car.getCurrentTrip();
 			currentTrip.setCancelTime(new Date());
-			//update Trip in Trip DB
-			updateProfileDb(currentTrip, mode, "CANCEL");
+			currentTrip.setEvent(TripEvent.CANCEL.name());
+			updateProfileDb(currentTrip, mode, TripEvent.CANCEL.name());
 			//remove current trip from car
 			car.setCurrentTrip(null);
 			//set the car to available
@@ -175,7 +179,8 @@ public class CarService {
 		if(currentTrip!=null) {
 			//set End time in current trip
 			currentTrip.setEndTime(new Date());
-			updateProfileDb(currentTrip, mode, "END");
+			currentTrip.setEvent(TripEvent.END.name());
+			updateProfileDb(currentTrip, mode, TripEvent.END.name());
 			//remove current trip from car
 			car.setCurrentTrip(null);
 			//set the car to available
@@ -193,7 +198,8 @@ public class CarService {
 			//set Cancel time in current trip
 			Trip currentTrip = car.getCurrentTrip();
 			currentTrip.setEndTime(new Date());
-			updateProfileDb(currentTrip, mode, "END");
+			currentTrip.setEvent(TripEvent.END.name());
+			updateProfileDb(currentTrip, mode, TripEvent.END.name());
 			//remove current trip from car
 			car.setCurrentTrip(null);
 			//set the car to available
@@ -205,38 +211,38 @@ public class CarService {
 		}
 	}
 
-	private void updateProfileDb(Trip trip, int mode, String action) {
+	private void updateProfileDb(Trip trip, int mode, String event) {
 		
 		if(mode==1) { //from mobile
 			RestTemplate restTemplate = new RestTemplate();
 	        //Trip profileTrip = restTemplate.getForObject("http://localhost:8081/trip/start/" + tripID, Trip.class);
 	        System.out.println("Returned Trip = " + trip.toString());
-	        notifyTablet(trip, action);
+	        notifyTablet(trip, event);
 		} else if(mode==2){ //from tablet
 			//check if the trip has a profile
 			if(trip.getUserID()!=null) {
 				RestTemplate restTemplate = new RestTemplate();
 		        //Trip profileTrip = restTemplate.getForObject("http://localhost:8081/trip/start/" + tripID, Trip.class);
 		        System.out.println("Returned Trip = " + trip.toString());
-		        notifyPhone(trip, action);
+		        notifyPhone(trip, event);
 			}
 		} else if(mode==3) {
-			notifyTablet(trip, action);
+			notifyTablet(trip, event);
 			if(trip.getUserFcmToken() != null) {
-				notifyPhone(trip, action);
+				notifyPhone(trip, event);
 			}
 		}
 		
 	}
 
-	private void notifyPhone(Trip trip, String action) {
+	private void notifyPhone(Trip trip, String event) {
 		String mobileFcm = trip.getUserFcmToken();
 		
 		HashMap<String,String> data = new HashMap<>();
-		data.put("EVENT", action);
+		data.put("EVENT", event);
 		data.put("TRIP_ID", trip.getId());
 		data.put("CAR_ID", trip.getCarID());
-		Notification notification = new Notification("GUC Self-Driving Car", "Trip update, " + action);
+		Notification notification = new Notification("GUC Self-Driving Car", "Trip update, " + event);
 		Message message = new Message();
 		message.setNotification(notification);
 		message.setData(data);
@@ -246,14 +252,14 @@ public class CarService {
 		
 	}
 
-	private void notifyTablet(Trip trip, String action) {
+	private void notifyTablet(Trip trip, String event) {
 		String tabletFcm = trip.getTabletFcmToken();
 		
 		HashMap<String,String> data = new HashMap<>();
-		data.put("EVENT", action);
+		data.put("EVENT", event);
 		data.put("TRIP_ID", trip.getId());
 		data.put("CAR_ID", trip.getCarID());
-		Notification notification = new Notification("GUC Self-Driving Car", "Trip update, " + action);
+		Notification notification = new Notification("GUC Self-Driving Car", "Trip update, " + event);
 		Message message = new Message();
 		message.setNotification(notification);
 		message.setData(data);
@@ -267,9 +273,10 @@ public class CarService {
 		if(car.getCurrentTrip() != null) {
 			Trip currentTrip = car.getCurrentTrip();
 			currentTrip.setCarArriveTime(new Date());
+			currentTrip.setEvent(TripEvent.ARRIVE_PICKUP.name());
 			car.setCurrentTrip(currentTrip);
 			tripRepository.save(currentTrip);
-			updateProfileDb(currentTrip, 3, "ARRIVE_PICKUP");
+			updateProfileDb(currentTrip, 3, TripEvent.ARRIVE_PICKUP.name());
 			return carRepository.save(car);
 		}else {
 			throw new NotFoundException("Car has no current trip");
@@ -281,9 +288,10 @@ public class CarService {
 		if(car.getCurrentTrip() != null) {
 			Trip currentTrip = car.getCurrentTrip();
 			currentTrip.setCarArriveFinal(new Date());
+			currentTrip.setEvent(TripEvent.ARRIVE_FINAL.name());
 			car.setCurrentTrip(currentTrip);
 			tripRepository.save(currentTrip);
-			updateProfileDb(currentTrip, 3, "ARRIVE_FINAL");
+			updateProfileDb(currentTrip, 3, TripEvent.ARRIVE_FINAL.name());
 			return carRepository.save(car);
 		}else {
 			throw new NotFoundException("Car has no current trip");
@@ -305,10 +313,11 @@ public class CarService {
 				}
 			}
 			currentTrip.setDestinations(destinations);
+			currentTrip.setEvent(TripEvent.ARRIVE_DESTINATION.name());
 			/////////////////////
 			car.setCurrentTrip(currentTrip);
 			tripRepository.save(currentTrip);
-			updateProfileDb(currentTrip, 3, "ARRIVE_DESTINATION");
+			updateProfileDb(currentTrip, 3, TripEvent.ARRIVE_DESTINATION.name());
 			return carRepository.save(car);
 		}else {
 			throw new NotFoundException("Car has no current trip");
@@ -319,8 +328,11 @@ public class CarService {
 		Car car = carRepository.findByCarID(carID);
 		Trip currentTrip = car.getCurrentTrip();
 		if(currentTrip!=null) {
-			updateProfileDb(currentTrip, mode, "CONTINUE");
-			return currentTrip;
+			currentTrip.setEvent(TripEvent.CONTINUE.name());
+			car.setCurrentTrip(currentTrip);
+			carRepository.save(car);
+			updateProfileDb(currentTrip, mode, TripEvent.CONTINUE.name());
+			return tripRepository.save(currentTrip);
 		}else {
 			throw new NotFoundException("This car has no current trip");
 		}
@@ -330,8 +342,11 @@ public class CarService {
 		Car car = carRepository.findByCurrentTripUserID(gmail);
 		Trip currentTrip = car.getCurrentTrip();
 		if(currentTrip!=null) {
-			updateProfileDb(currentTrip, mode, "CONTINUE");
-			return currentTrip;
+			currentTrip.setEvent(TripEvent.CONTINUE.name());
+			car.setCurrentTrip(currentTrip);
+			carRepository.save(car);
+			updateProfileDb(currentTrip, mode, TripEvent.CONTINUE.name());
+			return tripRepository.save(currentTrip);
 		}else {
 			throw new NotFoundException("This car has no current trip");
 		}

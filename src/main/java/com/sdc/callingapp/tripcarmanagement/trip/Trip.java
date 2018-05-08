@@ -13,6 +13,8 @@ public class Trip {
 	@Id
     private String id;
 	
+	private String event;
+	
 	private Date requestTime;
 	private Date carArriveTime;
 	private Date startTime;
@@ -147,7 +149,13 @@ public class Trip {
 	public void setCarArriveFinal(Date carArriveFinal) {
 		this.carArriveFinal = carArriveFinal;
 	}
-	
-	
+
+	public String getEvent() {
+		return event;
+	}
+
+	public void setEvent(String event) {
+		this.event = event;
+	}	
 
 }
