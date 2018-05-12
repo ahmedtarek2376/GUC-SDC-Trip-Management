@@ -135,11 +135,19 @@ public class CarController {
 		
 	}
 	
-	//use it to continue car's current trip from tablet
+	//use it to continue car's current trip from mobile
 	@RequestMapping(method=RequestMethod.GET, value="/trip/continue/mobile/{gmail}")
 	public Trip mobileContinueCurrentTrip(@PathVariable String gmail) {
 		
 		return carService.mobileContinue(gmail,1);
+		
+	}
+	
+	//use it to change destination of car's current trip from mobile
+	@RequestMapping(method=RequestMethod.POST, value="/trip/change/mobile/{gmail}")
+	public Trip mobileChangeDestination(@PathVariable String gmail, @RequestBody Trip trip) {
+		
+		return carService.mobileChange(gmail,trip,1);
 		
 	}
 	
@@ -172,6 +180,14 @@ public class CarController {
 	public Trip tabletContinueCurrentTrip(@PathVariable String carID) {
 		
 		return carService.tabletContinue(carID,2);
+		
+	}
+	
+	//use it to change destination of car's current trip from tablet
+	@RequestMapping(method=RequestMethod.POST, value="/trip/change/tablet/{carID}")
+	public Trip tabletChangeDestination(@PathVariable String carID, @RequestBody Trip trip) {
+		
+		return carService.tabletChange(carID,trip,2);
 		
 	}
 	

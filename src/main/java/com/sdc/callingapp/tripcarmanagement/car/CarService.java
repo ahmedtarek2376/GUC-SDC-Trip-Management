@@ -114,7 +114,7 @@ public class CarService {
 			currentTrip.setEvent(TripEvent.START.name());
 			car.setCurrentTrip(currentTrip);
 			carRepository.save(car);
-			updateProfileDb(currentTrip, mode, TripEvent.START.name());
+			updateProfileDb(currentTrip, mode, TripEvent.START.name(), "Your ride has started");
 			return tripRepository.save(currentTrip);
 		}else {
 			throw new NotFoundException("This car has no current trip");
@@ -130,7 +130,7 @@ public class CarService {
 			currentTrip.setEvent(TripEvent.START.name());
 			car.setCurrentTrip(currentTrip);
 			carRepository.save(car);
-			updateProfileDb(currentTrip, mode, TripEvent.START.name());
+			updateProfileDb(currentTrip, mode, TripEvent.START.name(), "Your ride has started");
 			return tripRepository.save(currentTrip);
 
 		}else {
@@ -146,7 +146,7 @@ public class CarService {
 			//set End time in current trip
 			currentTrip.setCancelTime(new Date());
 			currentTrip.setEvent(TripEvent.CANCEL.name());
-			updateProfileDb(currentTrip, mode, TripEvent.CANCEL.name());
+			updateProfileDb(currentTrip, mode, TripEvent.CANCEL.name(), "Your ride has been canceled");
 			//remove current trip from car
 			car.setCurrentTrip(null);
 			//set the car to available
@@ -165,7 +165,7 @@ public class CarService {
 			Trip currentTrip = car.getCurrentTrip();
 			currentTrip.setCancelTime(new Date());
 			currentTrip.setEvent(TripEvent.CANCEL.name());
-			updateProfileDb(currentTrip, mode, TripEvent.CANCEL.name());
+			updateProfileDb(currentTrip, mode, TripEvent.CANCEL.name(), "Your ride has been canceled");
 			//remove current trip from car
 			car.setCurrentTrip(null);
 			//set the car to available
@@ -184,7 +184,7 @@ public class CarService {
 			//set End time in current trip
 			currentTrip.setEndTime(new Date());
 			currentTrip.setEvent(TripEvent.END.name());
-			updateProfileDb(currentTrip, mode, TripEvent.END.name());
+			updateProfileDb(currentTrip, mode, TripEvent.END.name(), "Your ride ended. Thank you for using GUC SDC :)");
 			//remove current trip from car
 			car.setCurrentTrip(null);
 			//set the car to available
@@ -203,7 +203,7 @@ public class CarService {
 			Trip currentTrip = car.getCurrentTrip();
 			currentTrip.setEndTime(new Date());
 			currentTrip.setEvent(TripEvent.END.name());
-			updateProfileDb(currentTrip, mode, TripEvent.END.name());
+			updateProfileDb(currentTrip, mode, TripEvent.END.name(), "Your ride has ended. Thank you for using GUC SDC :)");
 			//remove current trip from car
 			car.setCurrentTrip(null);
 			//set the car to available
@@ -215,38 +215,38 @@ public class CarService {
 		}
 	}
 
-	private void updateProfileDb(Trip trip, int mode, String event) {
+	private void updateProfileDb(Trip trip, int mode, String event, String message) {
 		
 		if(mode==1) { //from mobile
 			RestTemplate restTemplate = new RestTemplate();
 	        //Trip profileTrip = restTemplate.getForObject("http://localhost:8081/trip/start/" + tripID, Trip.class);
 	        System.out.println("Returned Trip = " + trip.toString());
-	        notifyTablet(trip, event);
+	        notifyTablet(trip, event, message);
 		} else if(mode==2){ //from tablet
 			//check if the trip has a profile
 			if(trip.getUserID()!=null) {
 				RestTemplate restTemplate = new RestTemplate();
 		        //Trip profileTrip = restTemplate.getForObject("http://localhost:8081/trip/start/" + tripID, Trip.class);
 		        System.out.println("Returned Trip = " + trip.toString());
-		        notifyPhone(trip, event);
+		        notifyPhone(trip, event, message);
 			}
 		} else if(mode==3) {
-			notifyTablet(trip, event);
+			notifyTablet(trip, event, message);
 			if(trip.getUserFcmToken() != null) {
-				notifyPhone(trip, event);
+				notifyPhone(trip, event, message);
 			}
 		}
 		
 	}
 
-	private void notifyPhone(Trip trip, String event) {
+	private void notifyPhone(Trip trip, String event, String message2) {
 		String mobileFcm = trip.getUserFcmToken();
 		
 		HashMap<String,String> data = new HashMap<>();
 		data.put("EVENT", event);
 		data.put("TRIP_ID", trip.getId());
 		data.put("CAR_ID", trip.getCarID());
-		Notification notification = new Notification("GUC Self-Driving Car", "Trip update, " + event);
+		Notification notification = new Notification("GUC Self-Driving Car", message2);
 		Message message = new Message();
 		message.setNotification(notification);
 		message.setData(data);
@@ -256,14 +256,14 @@ public class CarService {
 		
 	}
 
-	private void notifyTablet(Trip trip, String event) {
+	private void notifyTablet(Trip trip, String event, String message2) {
 		String tabletFcm = trip.getTabletFcmToken();
 		
 		HashMap<String,String> data = new HashMap<>();
 		data.put("EVENT", event);
 		data.put("TRIP_ID", trip.getId());
 		data.put("CAR_ID", trip.getCarID());
-		Notification notification = new Notification("GUC Self-Driving Car", "Trip update, " + event);
+		Notification notification = new Notification("GUC Self-Driving Car", message2);
 		Message message = new Message();
 		message.setNotification(notification);
 		message.setData(data);
@@ -280,7 +280,7 @@ public class CarService {
 			currentTrip.setEvent(TripEvent.ARRIVE_PICKUP.name());
 			car.setCurrentTrip(currentTrip);
 			tripRepository.save(currentTrip);
-			updateProfileDb(currentTrip, 3, TripEvent.ARRIVE_PICKUP.name());
+			updateProfileDb(currentTrip, 3, TripEvent.ARRIVE_PICKUP.name(), "Your car has arrived to the pickup location");
 			return carRepository.save(car);
 		}else {
 			throw new NotFoundException("Car has no current trip");
@@ -295,7 +295,7 @@ public class CarService {
 			currentTrip.setEvent(TripEvent.ARRIVE_FINAL.name());
 			car.setCurrentTrip(currentTrip);
 			tripRepository.save(currentTrip);
-			updateProfileDb(currentTrip, 3, TripEvent.ARRIVE_FINAL.name());
+			updateProfileDb(currentTrip, 3, TripEvent.ARRIVE_FINAL.name(), "You reached your last destination");
 			return carRepository.save(car);
 		}else {
 			throw new NotFoundException("Car has no current trip");
@@ -321,7 +321,7 @@ public class CarService {
 			/////////////////////
 			car.setCurrentTrip(currentTrip);
 			tripRepository.save(currentTrip);
-			updateProfileDb(currentTrip, 3, TripEvent.ARRIVE_DESTINATION.name());
+			updateProfileDb(currentTrip, 3, TripEvent.ARRIVE_DESTINATION.name(), "Destination arrived");
 			return carRepository.save(car);
 		}else {
 			throw new NotFoundException("Car has no current trip");
@@ -335,7 +335,7 @@ public class CarService {
 			currentTrip.setEvent(TripEvent.CONTINUE.name());
 			car.setCurrentTrip(currentTrip);
 			carRepository.save(car);
-			updateProfileDb(currentTrip, mode, TripEvent.CONTINUE.name());
+			updateProfileDb(currentTrip, mode, TripEvent.CONTINUE.name(), "Car moving to next destination");
 			return tripRepository.save(currentTrip);
 		}else {
 			throw new NotFoundException("This car has no current trip");
@@ -349,7 +349,7 @@ public class CarService {
 			currentTrip.setEvent(TripEvent.CONTINUE.name());
 			car.setCurrentTrip(currentTrip);
 			carRepository.save(car);
-			updateProfileDb(currentTrip, mode, TripEvent.CONTINUE.name());
+			updateProfileDb(currentTrip, mode, TripEvent.CONTINUE.name(), "Car moving to next destination");
 			return tripRepository.save(currentTrip);
 		}else {
 			throw new NotFoundException("This car has no current trip");
@@ -373,6 +373,37 @@ public class CarService {
 		}
 		
 		return map;
+	}
+
+	public Trip mobileChange(String gmail, Trip trip, int mode) {
+		Car car = carRepository.findByCurrentTripUserID(gmail);
+		Trip currentTrip = car.getCurrentTrip();
+		if(currentTrip!=null) {
+			currentTrip.setEvent(TripEvent.CHANGE_DESTINATION.name());
+			currentTrip.setDestinations(trip.getDestinations());
+			car.setCurrentTrip(currentTrip);
+			carRepository.save(car);
+			updateProfileDb(currentTrip, mode, TripEvent.CHANGE_DESTINATION.name(), "Your ride's destination(s) have been successfuly modified");
+			return tripRepository.save(currentTrip);
+		}else {
+			throw new NotFoundException("This car has no current trip");
+		}	
+		
+	}
+
+	public Trip tabletChange(String carID, Trip trip, int mode) {
+		Car car = carRepository.findByCarID(carID);
+		Trip currentTrip = car.getCurrentTrip();
+		if(currentTrip!=null) {
+			currentTrip.setEvent(TripEvent.CHANGE_DESTINATION.name());
+			currentTrip.setDestinations(trip.getDestinations());
+			car.setCurrentTrip(currentTrip);
+			carRepository.save(car);
+			updateProfileDb(currentTrip, mode, TripEvent.CHANGE_DESTINATION.name(), "Your ride's destination(s) have been successfuly modified");
+			return tripRepository.save(currentTrip);
+		}else {
+			throw new NotFoundException("This car has no current trip");
+		}
 	}
 	
 	
