@@ -1,5 +1,6 @@
 package com.sdc.callingapp.tripcarmanagement.trip;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -13,7 +14,7 @@ public class Trip {
 	@Id
     private String id;
 	
-	private String event;
+	private List<String> events;
 	
 	private Date requestTime;
 	private Date carArriveTime;
@@ -141,12 +142,15 @@ public class Trip {
 		this.carArriveFinal = carArriveFinal;
 	}
 
-	public String getEvent() {
-		return event;
+	public List<String> getEvents() {
+		return events;
 	}
 
 	public void setEvent(String event) {
-		this.event = event;
+		if(events==null) {
+			this.events = new ArrayList<>();
+		}
+		this.events.add(event);
 	}	
 
 }
