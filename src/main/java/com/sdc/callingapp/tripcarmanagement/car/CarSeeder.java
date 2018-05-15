@@ -18,11 +18,11 @@ public class CarSeeder implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		Car car1 = new Car("car1", "", new LatLng(), false);
-		Car car2 = new Car("car2", "", new LatLng(29.986225, 31.440492), true);
+		Car car2 = new Car("hadwa", "", new LatLng(29.986225, 31.440492), true);
 		Car car3 = new Car("car3", "", new LatLng(), false);
-		Car car4 = new Car("car4", "", new LatLng(29.984971, 31.440341), true);
+		Car car4 = new Car("abdelrahman", "", new LatLng(29.984971, 31.440341), true);
 		Car car5 = new Car("car5", "", new LatLng(), false);
-		Car car6 = new Car("car6", "", new LatLng(29.987298, 31.438829), true);
+		Car car6 = new Car("tarek", "", new LatLng(29.987298, 31.438829), true);
 		Car car7 = new Car("car7", "", new LatLng(), false);
 		Car car8 = new Car("car8", "", new LatLng(29.987270, 31.441484), true);
 		

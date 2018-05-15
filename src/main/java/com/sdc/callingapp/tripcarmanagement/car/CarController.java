@@ -86,6 +86,15 @@ public class CarController {
 		
 	}
 	
+	
+	//use it to create a new trip from tablet
+	@RequestMapping(method=RequestMethod.POST, value="/create/trip")
+	public Trip createTrip(@RequestBody Trip trip) {
+
+		return carService.createTrip(trip);
+
+	}
+	
 	//use it to notify that car arrived pickup location
 	@RequestMapping(method=RequestMethod.GET, value="/trip/arrive/pickup/{carID}")
 	public Car carArrivePickup(@PathVariable String carID) {

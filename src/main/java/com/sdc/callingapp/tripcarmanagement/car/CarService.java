@@ -405,6 +405,17 @@ public class CarService {
 			throw new NotFoundException("This car has no current trip");
 		}
 	}
+
+	public Trip createTrip(Trip trip) {
+		trip.setRequestTime(new Date());
+		Car car = carRepository.findByCarID(trip.getCarID());
+		trip.setTabletFcmToken(car.getTabletFcmToken());
+		car.setAvailable(false);
+		tripRepository.insert(trip);
+		car.setCurrentTrip(trip);
+		carRepository.save(car); 
+		return trip;
+	}
 	
 	
 	
