@@ -300,6 +300,7 @@ public class CarService {
 			return carRepository.save(car);
 		}else {
 			throw new NotFoundException("Car has no current trip");
+			
 		}
 	}
 
