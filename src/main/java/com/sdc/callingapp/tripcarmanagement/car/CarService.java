@@ -293,6 +293,7 @@ public class CarService {
 			Trip currentTrip = car.getCurrentTrip();
 			currentTrip.setCarArriveFinal(new Date());
 			currentTrip.setEvent(TripEvent.ARRIVE_FINAL.name());
+			currentTrip.getDestinations().get(currentTrip.getDestinations().size()-1).setArrived(true);
 			car.setCurrentTrip(currentTrip);
 			tripRepository.save(currentTrip);
 			updateProfileDb(currentTrip, 3, TripEvent.ARRIVE_FINAL.name(), "You reached your last destination");
