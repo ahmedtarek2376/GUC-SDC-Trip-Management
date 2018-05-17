@@ -24,7 +24,14 @@ public class PointsSeeder implements CommandLineRunner{
 	    GucPlace GATE_1 = new GucPlace("Gate 1",new LatLng(29.984504, 31.440095));
 	    GucPlace GATE_3 = new GucPlace("Gate 3",new LatLng(29.987276, 31.438320));
 	    GucPlace GATE_4 = new GucPlace("Gate 4",new LatLng(29.988201, 31.438331));
-		List<GucPlace> places = Arrays.asList(C3_U_AREA,C6_U_AREA,D4_U_AREA,B3_U_AREA,GUC_GYM,GATE_1,GATE_3,GATE_4);
+	    GucPlace EXAM_HALLS = new GucPlace("Exam Halls",new LatLng(29.988385, 31.438999));
+	    GucPlace ADMISSION = new GucPlace("Admission",new LatLng(29.988519, 31.440426));
+	    GucPlace SPORTS_AREA = new GucPlace("Sports Area",new LatLng(29.987312, 31.440933));
+	    GucPlace FOOTBALL_FIELD = new GucPlace("Football Field",new LatLng(29.986973, 31.442603));
+	    GucPlace FOOD_COURT = new GucPlace("Food Court",new LatLng(29.986652, 31.442321));
+	    GucPlace PARKING = new GucPlace("Parking",new LatLng(29.984960, 31.440612));
+
+		List<GucPlace> places = Arrays.asList(EXAM_HALLS,ADMISSION,SPORTS_AREA,FOOTBALL_FIELD,FOOD_COURT,PARKING,C3_U_AREA,C6_U_AREA,D4_U_AREA,B3_U_AREA,GUC_GYM,GATE_1,GATE_3,GATE_4);
 		this.gucRepository.deleteAll();
 		this.gucRepository.saveAll(places);
 	}
