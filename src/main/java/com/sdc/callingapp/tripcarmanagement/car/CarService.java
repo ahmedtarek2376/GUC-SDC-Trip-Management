@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.sdc.callingapp.tripcarmanagement.AlreadyExistException;
+import com.sdc.callingapp.tripcarmanagement.NoAvailableCarException;
 import com.sdc.callingapp.tripcarmanagement.LatLng;
 import com.sdc.callingapp.tripcarmanagement.NotFoundException;
 import com.sdc.callingapp.tripcarmanagement.fcm.FcmPushNotificationsService;
@@ -77,26 +77,12 @@ public class CarService {
 	}
 
 	public Car createCar(Car car) {
-		
-//		if (findCar(car.getcarID()) == null) { //if no car with this carID already exists
-//            carRepository.save(car);
-//        }else {
-//        	throw new AlreadyExistException("There is already a car with carID = " + car.getcarID());
-//        }
-		
 		carRepository.insert(car);
 		return findCar(car.getcarID());
 	}
 
 	public void deleteCar(String carID) {
 		carRepository.delete(findCar(carID));
-//		Car car = findCar(carID);
-//		
-//		if ( car != null) { //if a car with this carID exists
-//            carRepository.delete(findCar(carID));
-//        }else {
-//        	throw new NotFoundException("There is no car with carID = " + carID);
-//        }
 		
 	}
 

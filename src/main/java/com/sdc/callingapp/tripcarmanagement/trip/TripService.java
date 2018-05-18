@@ -4,8 +4,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.sdc.callingapp.tripcarmanagement.NoAvailableCarException;
 import com.sdc.callingapp.tripcarmanagement.NotFoundException;
 import com.sdc.callingapp.tripcarmanagement.car.Car;
 import com.sdc.callingapp.tripcarmanagement.car.CarRepository;
@@ -34,8 +37,10 @@ public class TripService {
 			tripRepository.insert(trip);
 			car.setCurrentTrip(trip);
 			carRepository.save(car); 
+			return trip;
+		} else {
+			throw new NoAvailableCarException();
 		}
-		return trip;
 	}
 
 	public Trip findTrip(String tripID) {

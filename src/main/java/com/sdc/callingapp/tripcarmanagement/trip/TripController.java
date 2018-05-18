@@ -34,13 +34,13 @@ public class TripController {
 	}
 	
 	//use it to retrieve a trip by its ID
-		@RequestMapping(method=RequestMethod.GET, value="/find/all")
-		public List<Trip> getAllTrips() {
+	@RequestMapping(method=RequestMethod.GET, value="/find/all")
+	public List<Trip> getAllTrips() {
 
-			return tripService.findAllTrips();
+		return tripService.findAllTrips();
 
-		}
-	
+	}
+
 	//use it to retrieve a trip by its ID
 	@RequestMapping(method=RequestMethod.GET, value="/find/{tripID}")
 	public Trip getTrip(@PathVariable String tripID) {
